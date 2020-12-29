@@ -50,18 +50,16 @@ CREATE TABLE IF NOT EXISTS `bolnica`.`radnik` (
   `adresa_stanovanja` VARCHAR(45) NOT NULL,
   `bolnica_id` INT NOT NULL,
   `odjel_id` INT NOT NULL,
-  PRIMARY KEY (`radnik_id`, `bolnica_id`, `odjel_id`),
-  INDEX `fk_bolnica_id_idx` (`bolnica_id` ASC) VISIBLE,
-  INDEX `fk_odjel_id_idx` (`odjel_id` ASC) VISIBLE,
+  PRIMARY KEY (`radnik_id`),
   CONSTRAINT `fk_bolnica_id`
     FOREIGN KEY (`bolnica_id`)
     REFERENCES `bolnica`.`bolnica` (`bolnica_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_odjel_id`
     FOREIGN KEY (`odjel_id`)
     REFERENCES `bolnica`.`odjel` (`odjel_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -74,12 +72,11 @@ CREATE TABLE IF NOT EXISTS `bolnica`.`doktor` (
   `specijalizacija` VARCHAR(45) NOT NULL,
   `dezura` INT NOT NULL,
   `radnik_id` INT NOT NULL,
-  PRIMARY KEY (`doktor_id`, `radnik_id`),
-  INDEX `fk_radnik_id_idx` (`radnik_id` ASC) VISIBLE,
+  PRIMARY KEY (`doktor_id`),
   CONSTRAINT `fk_radnik_id`
     FOREIGN KEY (`radnik_id`)
     REFERENCES `bolnica`.`radnik` (`radnik_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -92,12 +89,11 @@ CREATE TABLE IF NOT EXISTS `bolnica`.`pacijent` (
   `ime` VARCHAR(45) NOT NULL,
   `prezime` VARCHAR(45) NOT NULL,
   `bolnica_id` INT NOT NULL,
-  PRIMARY KEY (`pacijent_id`, `bolnica_id`),
-  INDEX `fk_bolnica_id_idx` (`bolnica_id` ASC) VISIBLE,
+  PRIMARY KEY (`pacijent_id`),
   CONSTRAINT `fk_bolnica1_id`
     FOREIGN KEY (`bolnica_id`)
     REFERENCES `bolnica`.`bolnica` (`bolnica_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -111,12 +107,11 @@ CREATE TABLE IF NOT EXISTS `bolnica`.`posjeta` (
   `prezime` VARCHAR(45) NOT NULL,
   `datum_posjete` DATE NOT NULL,
   `pacijent_id` INT NOT NULL,
-  PRIMARY KEY (`posjeta_id`, `pacijent_id`),
-  INDEX `fk_pacijent_id_idx` (`pacijent_id` ASC) VISIBLE,
+  PRIMARY KEY (`posjeta_id`),
   CONSTRAINT `fk_pacijent_id`
     FOREIGN KEY (`pacijent_id`)
     REFERENCES `bolnica`.`pacijent` (`pacijent_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -131,12 +126,11 @@ CREATE TABLE IF NOT EXISTS `bolnica`.`karton` (
   `datum_primanja_u_bolnicu` DATE NULL,
   `datum_izlaska_iz_bolnice` DATE NULL,
   `pacijent_id` INT NOT NULL,
-  PRIMARY KEY (`karton_id`, `pacijent_id`),
-  INDEX `fk_pacijent_id_idx` (`pacijent_id` ASC) VISIBLE,
+  PRIMARY KEY (`karton_id`),
   CONSTRAINT `fk_pacijent1_id`
     FOREIGN KEY (`pacijent_id`)
     REFERENCES `bolnica`.`pacijent` (`pacijent_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -150,12 +144,11 @@ CREATE TABLE IF NOT EXISTS `bolnica`.`lijekovi` (
   `proizvodjac` VARCHAR(45) NOT NULL,
   `br_dana_koristenja_terapije` INT NULL,
   `karton_id` INT NOT NULL,
-  PRIMARY KEY (`lijekovi_id`, `karton_id`),
-  INDEX `fk_karton_id_idx` (`karton_id` ASC) VISIBLE,
+  PRIMARY KEY (`lijekovi_id`),
   CONSTRAINT `fk_karton_id`
     FOREIGN KEY (`karton_id`)
     REFERENCES `bolnica`.`karton` (`karton_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -169,12 +162,11 @@ CREATE TABLE IF NOT EXISTS `bolnica`.`ugovor` (
   `datum_zaposlenja` DATE NOT NULL,
   `broj_racuna` VARCHAR(45) NOT NULL,
   `radnik_id` INT NOT NULL,
-  PRIMARY KEY (`ugovor_id`, `radnik_id`),
-  INDEX `fk_radnik1_id_idx` (`radnik_id` ASC) VISIBLE,
+  PRIMARY KEY (`ugovor_id`),
   CONSTRAINT `fk_radnik1_id`
     FOREIGN KEY (`radnik_id`)
     REFERENCES `bolnica`.`radnik` (`radnik_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -185,12 +177,11 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `bolnica`.`cistacica` (
   `cistacica_id` INT NOT NULL,
   `radnik_id` INT NOT NULL,
-  PRIMARY KEY (`cistacica_id`, `radnik_id`),
-  INDEX `fk_radnik2_id_idx` (`radnik_id` ASC) VISIBLE,
+  PRIMARY KEY (`cistacica_id`),
   CONSTRAINT `fk_radnik2_id`
     FOREIGN KEY (`radnik_id`)
     REFERENCES `bolnica`.`radnik` (`radnik_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -202,12 +193,11 @@ CREATE TABLE IF NOT EXISTS `bolnica`.`medtehnicar` (
   `medtehnicar_id` INT NOT NULL,
   `dezura` INT NOT NULL,
   `radnik_id` INT NOT NULL,
-  PRIMARY KEY (`medtehnicar_id`, `radnik_id`),
-  INDEX `fk_radnik3_id_idx` (`radnik_id` ASC) VISIBLE,
+  PRIMARY KEY (`medtehnicar_id`),
   CONSTRAINT `fk_radnik3_id`
     FOREIGN KEY (`radnik_id`)
     REFERENCES `bolnica`.`radnik` (`radnik_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -218,18 +208,16 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `bolnica`.`pacijent_medtehnicar` (
   `pacijent_id` INT NOT NULL,
   `medtehnicar_id` INT NOT NULL,
-  INDEX `fk_pacijent2_id_idx` (`pacijent_id` ASC) VISIBLE,
-  INDEX `fk_medtehnicar_id_idx` (`medtehnicar_id` ASC) VISIBLE,
-  PRIMARY KEY (`pacijent_id`, `medtehnicar_id`),
+  PRIMARY KEY (`pacijent_id`),
   CONSTRAINT `fk_pacijent2_id`
     FOREIGN KEY (`pacijent_id`)
     REFERENCES `bolnica`.`pacijent` (`pacijent_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_medtehnicar_id`
     FOREIGN KEY (`medtehnicar_id`)
     REFERENCES `bolnica`.`medtehnicar` (`medtehnicar_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -241,12 +229,11 @@ CREATE TABLE IF NOT EXISTS `bolnica`.`vozac` (
   `vozac_id` INT NOT NULL,
   `dezura` INT NOT NULL,
   `radnik_id` INT NOT NULL,
-  PRIMARY KEY (`vozac_id`, `radnik_id`),
-  INDEX `fk_radnik4_id_idx` (`radnik_id` ASC) VISIBLE,
+  PRIMARY KEY (`vozac_id`),
   CONSTRAINT `fk_radnik4_id`
     FOREIGN KEY (`radnik_id`)
     REFERENCES `bolnica`.`radnik` (`radnik_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -257,18 +244,16 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `bolnica`.`pacijent_doktor` (
   `pacijent_id` INT NOT NULL,
   `doktor_id` INT NOT NULL,
-  INDEX `fk_pacijent3_id_idx` (`pacijent_id` ASC) VISIBLE,
-  INDEX `fk_doktor_id_idx` (`doktor_id` ASC) VISIBLE,
-  PRIMARY KEY (`pacijent_id`, `doktor_id`),
+  PRIMARY KEY (`pacijent_id`),
   CONSTRAINT `fk_pacijent3_id`
     FOREIGN KEY (`pacijent_id`)
     REFERENCES `bolnica`.`pacijent` (`pacijent_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_doktor_id`
     FOREIGN KEY (`doktor_id`)
     REFERENCES `bolnica`.`doktor` (`doktor_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -284,24 +269,21 @@ CREATE TABLE IF NOT EXISTS `bolnica`.`hitna` (
   `doktor_id` INT NOT NULL,
   `medtehnicar_id` INT NOT NULL,
   `vozac_id` INT NOT NULL,
-  PRIMARY KEY (`hitna_id`, `doktor_id`, `vozac_id`, `medtehnicar_id`),
-  INDEX `fk_doktor1_id_idx` (`doktor_id` ASC) VISIBLE,
-  INDEX `fk_medtehnicar1_id_idx` (`medtehnicar_id` ASC) VISIBLE,
-  INDEX `fk_vozac_id_idx` (`vozac_id` ASC) VISIBLE,
+  PRIMARY KEY (`hitna_id`),
   CONSTRAINT `fk_doktor1_id`
     FOREIGN KEY (`doktor_id`)
     REFERENCES `bolnica`.`doktor` (`doktor_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_medtehnicar1_id`
     FOREIGN KEY (`medtehnicar_id`)
     REFERENCES `bolnica`.`medtehnicar` (`medtehnicar_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_vozac_id`
     FOREIGN KEY (`vozac_id`)
     REFERENCES `bolnica`.`vozac` (`vozac_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
